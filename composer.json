@@ -1,0 +1,12 @@
+{
+    "name": "saxulum/saxulum-collection-js",
+    "description": "A simple javascript manage symfony form collections",
+    "keywords": ["saxulum", "symfony", "symfony form", "collection"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Dominik Zogg",
+            "email": "dominik.zogg@gmail.com"
+        }
+    ]
+}
