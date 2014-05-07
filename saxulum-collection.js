@@ -20,6 +20,9 @@
                 var $element = $(element);
 
                 $($element, window).on('click', settings[key]['addSelector'], function(event) {
+
+                    event.preventDefault();
+
                     $link = $(event.target);
 
                     var $collection = $('#'+ $link.attr('data-collection'));
@@ -45,6 +48,9 @@
                 });
 
                 $($element, window).on('click', settings[key]['removeSelector'], function(event) {
+
+                    event.preventDefault();
+
                     $link = $(event.target);
 
                     var $widget = $('#'+ $link.attr('data-field'));
