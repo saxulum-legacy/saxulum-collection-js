@@ -45,6 +45,8 @@
 
                     var $elementWrapper = $(elementWrappers).html(newWidget);
                     $elementWrapper.appendTo($wrapper);
+
+                    $.trigger('saxulum-collection.add');
                 });
 
                 $($element, window).on('click', settings[key]['removeSelector'], function(event) {
@@ -57,6 +59,8 @@
                     var $elementWrapper = $widget.closest(settings[key]['elementWrapperTag']);
 
                     $elementWrapper.remove();
+
+                    $.trigger('saxulum-collection.remove');
                 });
             });
         }
