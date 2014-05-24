@@ -40,13 +40,15 @@
                     newWidget = newWidget.replace(/__name__/g, count);
                     newWidget = newWidget.replace(/__id__/g, newName[1].replace(/__name__/g, count));
 
-                    var elementWrappers = '<' + settings[key]['elementWrapperTag'] + '>';
-                    elementWrappers += '</' + settings[key]['elementWrapperTag'] + '>';
+                    var elementWrapper = '<' + settings[key]['elementWrapperTag'] + '>';
+                    elementWrapper += '</' + settings[key]['elementWrapperTag'] + '>';
 
-                    var $elementWrapper = $(elementWrappers).html(newWidget);
+                    var $elementWrapper = $(elementWrapper);
+
+                    $elementWrapper.html(newWidget);
                     $elementWrapper.appendTo($wrapper);
 
-                    $.trigger('saxulum-collection.add');
+                    $(window).trigger('saxulum-collection.add', [$elementWrapper]);
                 });
 
                 $($element, window).on('click', settings[key]['removeSelector'], function(event) {
@@ -60,7 +62,7 @@
 
                     $elementWrapper.remove();
 
-                    $.trigger('saxulum-collection.remove');
+                    $(window).trigger('saxulum-collection.remove');
                 });
             });
         }
