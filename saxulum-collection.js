@@ -40,15 +40,14 @@
                     newWidget = newWidget.replace(/__name__/g, count);
                     newWidget = newWidget.replace(/__id__/g, newName[1].replace(/__name__/g, count));
 
-                    var elementWrapper = '<' + settings[key]['elementWrapperTag'] + '>';
-                    elementWrapper += '</' + settings[key]['elementWrapperTag'] + '>';
+                    var elementWrapper = document.createElement(settings[key]['elementWrapperTag']);
+                    elementWrapper.innerHTML = newWidget;
 
-                    var $elementWrapper = $(elementWrapper);
-
-                    $elementWrapper.html(newWidget);
-                    $elementWrapper.appendTo($wrapper);
-
-                    $(window).trigger('saxulum-collection.add', [$elementWrapper]);
+                    $.when(
+                        $(elementWrapper).appendTo($wrapper)
+                    ).done(function() {
+                        $(window).trigger('saxulum-collection.add', [$(settings[key]['elementWrapperTag'], $wrapper).last()]);
+                    });
                 });
 
                 $($element, window).on('click', settings[key]['removeSelector'], function(event) {
@@ -60,9 +59,11 @@
                     var $widget = $('#'+ $link.attr('data-field'));
                     var $elementWrapper = $widget.closest(settings[key]['elementWrapperTag']);
 
-                    $elementWrapper.remove();
-
-                    $(window).trigger('saxulum-collection.remove');
+                    $.when(
+                        $(window).trigger('saxulum-collection.remove', [$elementWrapper])
+                    ).done(function() {
+                        $elementWrapper.remove();
+                    });
                 });
             });
         }
