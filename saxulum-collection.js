@@ -12,7 +12,8 @@
                 addSelector: '[data-addfield="collection"]',
                 removeSelector: '[data-removefield="collection"]',
                 wrapperSelector: 'ul.bc-collection',
-                elementWrapperTag: 'li'
+                elementWrapperTag: 'li',
+                elementWrapperAttribute: 'data-collection-element'
             }, options);
 
             return this.each(function(index, element) {
@@ -27,7 +28,7 @@
 
                     var $collection = $('#'+ $link.attr('data-collection'));
                     var $wrapper = $collection.find(settings[key]['wrapperSelector']);
-                    var count = $wrapper.find(settings[key]['elementWrapperTag']).size();
+                    var count = $wrapper.children(settings[key]['elementWrapperTag']).size();
 
                     var newWidget = $link.attr('data-prototype') ? $link.attr('data-prototype') : $collection.attr('data-prototype');
 
@@ -41,10 +42,13 @@
                     newWidget = newWidget.replace(/__id__/g, newName[1].replace(/__name__/g, count));
 
                     var elementWrapper = document.createElement(settings[key]['elementWrapperTag']);
-                    elementWrapper.innerHTML = newWidget;
+                    var $elementWrapper = $(elementWrapper);
+
+                    $elementWrapper.attr(settings[key]['elementWrapperAttribute'], newName[1].replace(/__name__/g, count));
+                    $elementWrapper.html(newWidget);
 
                     $.when(
-                        $(elementWrapper).appendTo($wrapper)
+                        $elementWrapper.appendTo($wrapper)
                     ).done(function() {
                         $(document).trigger('saxulum-collection.add', [$(settings[key]['elementWrapperTag'], $wrapper).last()]);
                     });
@@ -56,25 +60,13 @@
 
                     $link = $(event.target);
 
-                    var $widget = $('#'+ $link.attr('data-field'));
-                    var $elementWrapper = false;
+                    var $elementWrapper = $(settings[key]['elementWrapperTag'] + '[' + settings[key]['elementWrapperAttribute'] + '="' + $link.attr('data-field') + '"]');
 
-                    $widget.parents(settings[key]['elementWrapperTag']).each(function(i, element){
-                        if(!$elementWrapper) {
-                            $element = $(element);
-                            if($element.parent(settings[key]['wrapperSelector'])) {
-                                $elementWrapper = $element;
-                            }
-                        }
+                    $.when(
+                        $(document).trigger('saxulum-collection.remove', [$elementWrapper])
+                    ).done(function() {
+                        $elementWrapper.remove();
                     });
-
-                    if(typeof $elementWrapper != null) {
-                        $.when(
-                            $(document).trigger('saxulum-collection.remove', [$elementWrapper])
-                        ).done(function() {
-                            $elementWrapper.remove();
-                        });
-                    }
                 });
             });
         }
