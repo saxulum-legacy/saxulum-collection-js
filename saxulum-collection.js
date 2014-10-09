@@ -12,8 +12,7 @@
                 addSelector: '[data-addfield="collection"]',
                 removeSelector: '[data-removefield="collection"]',
                 wrapperSelector: 'ul.bc-collection',
-                elementWrapperTag: 'li',
-                elementWrapperAttribute: 'data-collection-element'
+                elementWrapperTag: 'li'
             }, options);
 
             return this.each(function(index, element) {
@@ -44,7 +43,6 @@
                     var elementWrapper = document.createElement(settings[key]['elementWrapperTag']);
                     var $elementWrapper = $(elementWrapper);
 
-                    $elementWrapper.attr(settings[key]['elementWrapperAttribute'], newName[1].replace(/__name__/g, count));
                     $elementWrapper.html(newWidget);
 
                     $.when(
@@ -60,7 +58,7 @@
 
                     $link = $(event.target);
 
-                    var $elementWrapper = $(settings[key]['elementWrapperTag'] + '[' + settings[key]['elementWrapperAttribute'] + '="' + $link.attr('data-field') + '"]');
+                    var $elementWrapper =  $link.parents(settings[key]['elementWrapperTag']).eq(0);
 
                     $.when(
                         $(document).trigger('saxulum-collection.remove', [$elementWrapper])
