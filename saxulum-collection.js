@@ -23,7 +23,11 @@
 
                     event.preventDefault();
 
-                    $link = $(event.target);
+                    var $link = $(event.target);
+
+                    if(!$link.is(settings[key]['addSelector'])) {
+                        $link.parents(settings[key]['addSelector']).eq(0);
+                    }
 
                     var $collection = $('#'+ $link.attr('data-collection'));
                     var $wrapper = $collection.find(settings[key]['wrapperSelector']);
@@ -56,7 +60,11 @@
 
                     event.preventDefault();
 
-                    $link = $(event.target);
+                    var $link = $(event.target);
+
+                    if(!$link.is(settings[key]['removeSelector'])) {
+                        $link.parents(settings[key]['removeSelector']).eq(0);
+                    }
 
                     var $elementWrapper =  $link.parents(settings[key]['elementWrapperTag']).eq(0);
 
